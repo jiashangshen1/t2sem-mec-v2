@@ -1,0 +1,8 @@
+# T2Sem-X ablation: disable conflict-aware credit shaping.
+
+reward:
+  ideal_credit_gain: 0.0
+
+experiment:
+  checkpoint_dir: results/ideal_track/checkpoints_t2semx_no_credit
+  log_dir: results/ideal_track/logs_t2semx_no_credit

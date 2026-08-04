@@ -1,0 +1,10 @@
+arrival_rate,method,n,sla_mean_pct,sla_std_pct
+0.15,greedy,3,95.78,0.06
+0.15,t2sem_full,3,97.91,0.48
+0.15,semantic_mappo,3,95.99,0.49
+0.25,greedy,3,87.77,0.05
+0.25,t2sem_full,3,93.99,1.42
+0.25,semantic_mappo,3,91.41,0.21
+0.35,greedy,3,79.27,0.1
+0.35,t2sem_full,3,88.77,2.73
+0.35,semantic_mappo,3,85.47,1.3

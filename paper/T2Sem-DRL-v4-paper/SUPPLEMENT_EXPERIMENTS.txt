@@ -1,0 +1,38 @@
+# Supplement Experiments (Reviewer Response)
+
+Started: 2026-07-06 | Pipeline: `t2sem-mec-v2/scripts/run_supplement_wsl.sh`
+
+## Goals (maps to reviewer concerns)
+
+| ID | Experiment | Script job | Output |
+|----|------------|------------|--------|
+| M4 | Semantic MAPPO + shared F | `semantic_mappo` | P1 SLA vs T2Sem-DRL |
+| M5 | Scale-up topology | `scaleup_greedy`, `scaleup_t2sem` | 16 UE / 32 terminals / 5 UAV |
+| M2 | Critical-priority variant | `critical_priority` | Higher critical η + weight |
+| Minor | Extra seeds (789, 1011) | `greedy`, `tjcct`, `t2sem_full` | n=5 for bootstrap |
+| M7 | Validation α selection | `alpha_validation.py` | best α on {42,123}, test on 456 |
+
+## Configs
+
+- `configs/improved_v4_semantic_mappo.yaml` — independent PPO actors + F
+- `configs/improved_v4_scaleup.yaml` — 2× scale
+- `configs/improved_v4_critical_priority.yaml` — critical weight 0.45, η_crit 0.85
+
+## Results location
+
+- Code: `results/supplement_v43/supplement_summary.csv`
+- Paper sync: `data/supplement_summary.csv` (after `sync_supplement_to_paper.py`)
+- Stats: `data/stats_summary.txt`
+- Alpha: `data/alpha_validation_summary.csv`
+
+## Monitor
+
+```bash
+wsl tail -f /mnt/c/Users/12293/Desktop/cpscources/cps3962/project/t2sem-mec-v2/results/supplement_v43/supplement.log
+```
+
+## Estimated wall time (WSL CPU)
+
+- Phase quick (eval): ~1 h
+- Alpha validation: ~30 min
+- Phase train: ~12–18 h (extra seeds + scale-up + critical-priority)

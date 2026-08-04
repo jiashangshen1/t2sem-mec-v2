@@ -1,0 +1,120 @@
+area_size: 500.0
+channel:
+  bandwidth: 10.0e6
+  carrier_freq: 2.0e9
+  los_prob_a: 9.61
+  los_prob_b: 0.16
+  noise_power: 1.0e-13
+drl:
+  bc_demo_episodes: 35
+  bc_train_epochs: 140
+  long:
+    algo: DDPG
+    gamma: 0.95
+    hidden_dim: 256
+    lr_actor: 0.0001
+    lr_critic: 0.001
+    noise_std: 0.06
+    tau: 0.005
+  short:
+    algo: shared_ppo
+    clip: 0.2
+    gae_lambda: 0.95
+    gamma: 0.99
+    hidden_dim: 256
+    lr: 0.00033
+    update_epochs: 9
+  total_long_frames: 290
+experiment:
+  checkpoint_dir: results/checkpoints_round3
+  eval_episodes: 30
+  eval_seeds:
+  - 42
+  - 123
+  - 456
+  log_dir: results/logs_round3
+  results_dir: results/round3
+hap:
+  max_bandwidth: 100.0e6
+  max_cpu: 50.0e9
+  positions:
+  - - 150.0
+    - 350.0
+    - 20000.0
+  - - 350.0
+    - 150.0
+    - 20000.0
+num_haps: 2
+num_long_frames: 290
+num_uavs: 3
+num_users: 8
+resource_contention: true
+reward:
+  w_energy: 0.09000000000000001
+  w_fairness: 0.45
+  w_queue: 0.5
+  w_sla: 11.04
+  w_throughput: 2.0
+  w_traj_energy: 0.2
+seed: 42
+semantic:
+  c_sem: 0.5
+  lambda_acc: 5.0
+  mu_max: 1.0
+  mu_min: 0.2
+  s_max: 1.0
+sla_tiers:
+  best_effort:
+    s_min: 0.75
+    t_max: 0.8
+    weight: 0.3
+  critical:
+    s_min: 0.92
+    t_max: 0.1
+    weight: 0.2
+  interactive:
+    s_min: 0.85
+    t_max: 0.3
+    weight: 0.5
+slot_duration: 1.0
+slots_per_frame: 10
+task:
+  arrival_rate: 0.2425
+  cpu_cycles: 1.0e9
+  data_bits: 2.0e6
+terminal_assignment:
+- phone
+- sensor
+terminal_types:
+  phone:
+    arrival_scale: 1.0
+    cpu_scale: 1.0
+    mobility_scale: 1.0
+    power_scale: 1.0
+  sensor:
+    arrival_scale: 1.4
+    cpu_scale: 0.6
+    mobility_scale: 0.3
+    power_scale: 0.5
+terminals_per_user: 2
+uav:
+  altitude_max: 300.0
+  altitude_min: 50.0
+  energy_prop_coeff: 0.5
+  init_positions:
+  - - 120.0
+    - 120.0
+    - 100.0
+  - - 250.0
+    - 250.0
+    - 100.0
+  - - 380.0
+    - 380.0
+    - 100.0
+  max_bandwidth: 20.0e6
+  max_cpu: 5.0e9
+  max_speed: 15.0
+user:
+  max_cpu: 1.0e9
+  max_power: 0.5
+  mobility_speed: 2.0

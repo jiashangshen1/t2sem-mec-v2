@@ -1,0 +1,14 @@
+# Paper reproduction run: merges over default.yaml
+# Episode length (num_long_frames) and training count (drl.total_long_frames) both reduced for feasible wall-clock.
+num_long_frames: 80
+slots_per_frame: 10
+
+drl:
+  total_long_frames: 60
+  bc_demo_episodes: 25
+  bc_train_epochs: 120
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  results_dir: results/journal

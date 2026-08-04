@@ -1,0 +1,29 @@
+# Ideal-track method config (overlay on default + ideal_v1_base).
+
+reward:
+  lagrangian_enabled: true
+  per_tier_lambda: true
+  feasibility_mask_enabled: true
+  # T2Sem-X prototype knobs.
+  ideal_credit_temp: 4.0
+  ideal_credit_gain: 0.15
+  ideal_dual_lr: 0.08
+  ideal_dual_ema: 0.2
+  ideal_dual_var_ema: 0.2
+  ideal_dual_risk_scale: 0.5
+
+drl:
+  short:
+    algo: shared_ppo
+    update_epochs: 10
+  long:
+    noise_std: 0.08
+    action_l2_coef: 0.05
+  total_long_frames: 300
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/ideal_track/checkpoints_t2semx
+  log_dir: results/ideal_track/logs_t2semx
+  results_dir: results/ideal_track

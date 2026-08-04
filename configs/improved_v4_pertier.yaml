@@ -1,0 +1,80 @@
+# Per-tier constrained RL + model-informed semantic-offloading feasibility
+# region (overrides configs/default.yaml). Builds on improved_v3_energy.yaml.
+#
+# Novel components (vs the single-constraint v3):
+#   (A) Multi-constraint CMDP: one Lagrange multiplier lambda_k PER SLA tier,
+#       so each QoS class (critical / interactive / best_effort) is guaranteed
+#       independently at minimum energy -- the harder critical class is no
+#       longer sacrificed for the easy ones.
+#   (B) Model-informed feasibility region: using the analytic delay/similarity
+#       model, mu is clamped up to meet the tier similarity and the offload
+#       target is restricted to deadline-feasible nodes. This routes critical
+#       tasks to the HAP (the only node that meets 0.1 s) and forbids the
+#       always-failing local-compute trap -- raising SLA at equal/lower energy
+#       (HAP offload needs no UAV propulsion).
+
+reward:
+  w_throughput: 5.0
+  w_energy: 0.01
+  w_sla: 1.0
+  w_queue: 0.2
+  w_traj_energy: 0.6        # aggressive: mask floor makes near-stationary UAVs safe
+  w_fairness: 0.1
+  rho_delay: 3.0
+  rho_sem: 3.0
+  penalty_clip: 5.0
+  energy_reward_clip: 100.0
+  shaping_enabled: true
+  w_shaping: 1.0
+  # --- multi-constraint CMDP ---
+  lagrangian_enabled: true
+  per_tier_lambda: true
+  sla_target_by_tier:
+    critical: 0.70
+    interactive: 0.85
+    best_effort: 0.85
+  sla_target: 0.8            # fallback for tiers without an explicit target
+  sla_lambda_init: 2.0
+  lambda_lr: 0.1
+  lambda_min: 0.0
+  lambda_max: 8.0
+  lambda_ema: 0.3
+  lambda_deficit_clip: 0.2
+  # --- model-informed feasibility region ---
+  feasibility_mask_enabled: true
+  mask_delay_margin: 0.8
+  mask_delay_margin_by_tier:
+    critical: 0.75
+    interactive: 0.65
+    best_effort: 0.85
+  mask_sim_margin: 0.05
+  mask_channel: expected      # LoS-probability-weighted gain (realistic, not best-case)
+
+drl:
+  short:
+    lr: 3.0e-4
+    update_epochs: 10
+    entropy_coef: 0.01
+    init_log_std: -0.3
+    log_std_min: -2.0
+    log_std_max: 0.7
+    max_grad_norm: 0.5
+  long:
+    noise_std: 0.08          # less movement exploration; routing handles SLA
+    action_l2_coef: 0.05     # strong push toward small/zero UAV displacement
+    smooth_coef: 0.02
+  total_long_frames: 300
+  bc_source: filtered
+  bc_demo_episodes: 30
+  bc_train_epochs: 150
+  bc_min_samples: 200
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/checkpoints_improved_pertier
+  log_dir: results/logs_improved_pertier
+  results_dir: results/improved_pertier
+  checkpoint_metric: eval
+  ckpt_eval_every: 15
+  ckpt_eval_episodes: 3

@@ -1,0 +1,28 @@
+# Mobility-critical scenario for DDPG necessity study (revision M3)
+area_size: 800.0
+
+user:
+  mobility_speed: 6.0
+  hotspot_drift: true
+  hotspot_speed: 8.0
+
+hap:
+  availability: 0.70
+
+reward:
+  w_traj_energy: 0.20
+  mask_delay_margin_by_tier:
+    critical: 0.75
+    interactive: 0.65
+    best_effort: 0.85
+
+drl:
+  long:
+    noise_std: 0.12
+    action_l2_coef: 0.01
+    smooth_coef: 0.01
+
+experiment:
+  checkpoint_dir: results/checkpoints_mobility_critical
+  log_dir: results/logs_mobility_critical
+  results_dir: results/mobility_critical

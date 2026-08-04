@@ -1,0 +1,11 @@
+reward:
+  per_tier_lambda: true
+  sla_target_by_tier:
+    critical: 0.90
+    interactive: 0.90
+    best_effort: 0.90
+  lambda_lr: 0.15
+  lambda_max: 12.0
+
+task:
+  arrival_rate: 0.35

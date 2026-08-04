@@ -1,0 +1,27 @@
+T2Sem-DRL Final Numeric Summary
+================================
+
+Main comparison (mean over 3 seeds)
+-----------------------------------
+greedy              SLA 87.77%  delay 0.122s  energy 3630J
+tjcct               SLA 86.64%  delay 0.266s  energy 3698J
+independent_ppo     SLA 91.41%  delay 0.145s  energy 20482J
+t2sem_single_ts     SLA 88.85%  delay 0.145s  energy 4065J
+t2sem_full          SLA 93.99%  delay 0.100s  energy 7856J
+
+Ablation v4.3
+-------------
+full                SLA 92.17%  critical 76.0%  interactive 99.2%
+no_semantic         SLA 46.17%  critical 1.8%   interactive 36.5%
+mask_off            SLA 60.39%  critical 5.2%   interactive 78.5%
+single_lambda       SLA 92.80%  critical 83.8%  interactive 94.3%
+single_timescale    SLA 90.70%  energy 4013J
+
+Mobility-critical stress test
+------------------------------
+two-timescale full  SLA 16.4±13.6%  delay 0.870s  energy 53959J
+single-timescale    SLA 1.7±2.9%    delay 2.403s  energy 8509J
+
+Contribution hierarchy
+----------------------
+semantic (+46.0 pp) > mask (+31.8 pp) > RL over masked greedy (+6.2 pp)

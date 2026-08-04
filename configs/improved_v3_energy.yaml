@@ -1,0 +1,67 @@
+# Energy-balanced T2Sem-DRL (overrides configs/default.yaml).
+#
+# Builds on improved_v2.yaml (entropy exploration, filtered BC, reward shaping,
+# eval-based checkpointing) and adds two energy-aware algorithmic mechanisms:
+#
+#   (1) Lagrangian constrained RL -- minimize energy subject to SLA >= target.
+#       An adaptive multiplier lambda (dual ascent on the SLA deficit) scales
+#       the SLA-quality reward; once SLA >= sla_target, lambda decays and the
+#       energy/propulsion cost dominates, so the policy cuts power.
+#
+#   (2) Energy-efficient trajectory control on the long (DDPG) agent:
+#       - heavier propulsion penalty (w_traj_energy)
+#       - L2 penalty on the trajectory action (UAV speed ~ |action|)
+#       - smoothness penalty on consecutive trajectory actions
+#       Together these stop the UAVs flying fast/erratically once well placed
+#       (propulsion energy ~ speed^2 was ~99% of total energy).
+
+reward:
+  w_throughput: 5.0
+  w_energy: 0.01
+  w_sla: 1.0
+  w_queue: 0.2
+  w_traj_energy: 0.25       # moderate propulsion penalty (0.5 collapsed SLA)
+  w_fairness: 0.1
+  rho_delay: 3.0
+  rho_sem: 3.0
+  penalty_clip: 5.0
+  energy_reward_clip: 100.0
+  shaping_enabled: true
+  w_shaping: 1.0
+  # --- Proper CMDP / PPO-Lagrangian: lambda weights a BOUNDED miss cost
+  # (1 - hit) in [0,1], never the positive reward -> stable scale. ---
+  lagrangian_enabled: true
+  sla_target: 0.6
+  sla_lambda_init: 2.0
+  lambda_lr: 0.1
+  lambda_min: 0.0           # free to fully prioritize energy once SLA is met
+  lambda_max: 6.0           # bounded -> per-miss penalty at most ~6
+
+drl:
+  short:
+    lr: 3.0e-4
+    update_epochs: 10
+    entropy_coef: 0.01
+    init_log_std: -0.3
+    log_std_min: -2.0
+    log_std_max: 0.7
+    max_grad_norm: 0.5
+  long:
+    noise_std: 0.12         # a bit more trajectory exploration to find good spots
+    action_l2_coef: 0.01    # mild speed shrink (0.05 froze UAVs -> SLA crash)
+    smooth_coef: 0.005      # mild smoothness
+  total_long_frames: 300
+  bc_source: filtered
+  bc_demo_episodes: 30
+  bc_train_epochs: 150
+  bc_min_samples: 200
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/checkpoints_improved_energy
+  log_dir: results/logs_improved_energy
+  results_dir: results/improved_energy
+  checkpoint_metric: eval
+  ckpt_eval_every: 15
+  ckpt_eval_episodes: 3

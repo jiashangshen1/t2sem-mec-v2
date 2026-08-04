@@ -1,0 +1,53 @@
+# Improved T2Sem-DRL training config (overrides configs/default.yaml).
+#
+# Addresses the four root causes that kept A1_full below the random baseline:
+#   1. Reward rebalanced: the SLA *penalty* no longer dominates. Throughput +
+#      dense feasibility shaping give a gradient toward meeting SLA instead of
+#      a penalty cliff. (Raising w_sla was counterproductive in rounds 3/5.)
+#   2. Exploration: PPO entropy bonus + a hard floor on log_std prevent the
+#      premature policy collapse that trapped previous runs below random.
+#   3. Warm-start: behavioral cloning now imitates SLA-*successful* transitions
+#      (filtered from random+greedy) instead of cloning 0%-SLA greedy.
+#   4. Checkpoint selection by periodic deterministic evaluation, not a single
+#      noisy training episode.
+
+reward:
+  w_throughput: 5.0        # make an SLA hit clearly attractive
+  w_energy: 0.01           # de-emphasize raw energy magnitude
+  w_sla: 1.0               # penalty weight; small on purpose (see rho/clip)
+  w_queue: 0.2
+  w_traj_energy: 0.1
+  w_fairness: 0.1
+  rho_delay: 3.0           # was hardcoded 10 -> softer delay penalty
+  rho_sem: 3.0
+  penalty_clip: 5.0        # bound the per-task penalty (no exploding cliff)
+  energy_reward_clip: 100.0  # cap energy term so one offload can't dominate
+  shaping_enabled: true
+  w_shaping: 1.0           # dense potential toward delay<=t_max, sim>=s_min
+
+drl:
+  short:
+    lr: 3.0e-4
+    update_epochs: 10
+    entropy_coef: 0.01     # anti-collapse exploration bonus
+    init_log_std: -0.3     # std ~= 0.74 at start
+    log_std_min: -2.0      # std never drops below ~0.135 (keeps exploring)
+    log_std_max: 0.7
+    max_grad_norm: 0.5
+  long:
+    noise_std: 0.1
+  total_long_frames: 300
+  bc_source: filtered      # clone SLA-successful behaviour, not greedy
+  bc_demo_episodes: 30
+  bc_train_epochs: 150
+  bc_min_samples: 200
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/checkpoints_improved
+  log_dir: results/logs_improved
+  results_dir: results/improved
+  checkpoint_metric: eval  # train_last | moving_avg | eval
+  ckpt_eval_every: 15
+  ckpt_eval_episodes: 3

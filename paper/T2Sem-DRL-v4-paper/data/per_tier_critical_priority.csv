@@ -1,0 +1,3 @@
+method,overall,critical,critical_n,interactive,interactive_n,best_effort,best_effort_n
+critical_priority,0.9047,0.8042,287929,0.9081,281589,0.9995,294951
+greedy_critical_priority,0.8766,0.6303,288624,1.0,288782,1.0,287063

@@ -1,0 +1,2 @@
+job,variant,seed,sla_rate_mean,sla_rate_std,avg_delay_mean,total_energy_mean,note
+ideal_t2sem_x,full,42,0.9964298663210748,0.0034414850266975836,0.10392137436906372,1125.069625712226,method_ablation

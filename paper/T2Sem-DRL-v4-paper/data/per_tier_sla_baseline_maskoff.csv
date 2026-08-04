@@ -1,0 +1,5 @@
+method,overall,critical,critical_n,interactive,interactive_n,best_effort,best_effort_n
+greedy (mask-off),0.0,0.0,288294,0.0,287859,0.0,287752
+tjcct (mask-off),0.0,0.0,288294,0.0,287859,0.0,287752
+random (mask-off),0.3317,0.0967,287955,0.3149,288748,0.5831,288635
+local_only (mask-off),0.0,0.0,288294,0.0,287859,0.0,287752

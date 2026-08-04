@@ -1,0 +1,121 @@
+# T2Sem-MEC v2: multi-UAV, multi-user, multi-terminal hierarchical semantic MEC
+seed: 42
+num_users: 8
+terminals_per_user: 2
+num_uavs: 3
+num_haps: 2
+num_long_frames: 200
+slots_per_frame: 10
+slot_duration: 1.0
+area_size: 500.0
+resource_contention: true
+
+terminal_types:
+  phone:
+    cpu_scale: 1.0
+    power_scale: 1.0
+    arrival_scale: 1.0
+    mobility_scale: 1.0
+  sensor:
+    cpu_scale: 0.6
+    power_scale: 0.5
+    arrival_scale: 1.4
+    mobility_scale: 0.3
+
+terminal_assignment: [phone, sensor]
+
+uav:
+  init_positions:
+    - [120.0, 120.0, 100.0]
+    - [250.0, 250.0, 100.0]
+    - [380.0, 380.0, 100.0]
+  max_speed: 15.0
+  max_cpu: 5.0e9
+  max_bandwidth: 20.0e6
+  energy_prop_coeff: 0.5
+  altitude_min: 50.0
+  altitude_max: 300.0
+
+hap:
+  positions:
+    - [150.0, 350.0, 20000.0]
+    - [350.0, 150.0, 20000.0]
+  max_cpu: 50.0e9
+  max_bandwidth: 100.0e6
+
+user:
+  max_cpu: 1.0e9
+  max_power: 0.5
+  mobility_speed: 2.0
+
+task:
+  data_bits: 2.0e6
+  cpu_cycles: 1.0e9
+  arrival_rate: 0.25
+
+semantic:
+  mu_min: 0.2
+  mu_max: 1.0
+  c_sem: 0.5
+  s_max: 1.0
+  lambda_acc: 5.0
+
+channel:
+  bandwidth: 10.0e6
+  noise_power: 1.0e-13
+  carrier_freq: 2.0e9
+  los_prob_a: 9.61
+  los_prob_b: 0.16
+
+sla_tiers:
+  critical:
+    t_max: 0.1
+    s_min: 0.92
+    weight: 0.2
+  interactive:
+    t_max: 0.3
+    s_min: 0.85
+    weight: 0.5
+  best_effort:
+    t_max: 0.8
+    s_min: 0.75
+    weight: 0.3
+
+reward:
+  w_throughput: 2.0
+  w_energy: 0.1
+  w_sla: 8.0
+  w_queue: 0.5
+  w_traj_energy: 0.2
+  w_fairness: 0.3
+
+drl:
+  # cpu is the project default: small MLPs + heavy env stepping beat GPU sync cost.
+  # Override with --device cuda when scaling networks/batches.
+  device: cpu
+  short:
+    algo: shared_ppo
+    lr: 3.0e-4
+    gamma: 0.99
+    clip: 0.2
+    gae_lambda: 0.95
+    update_epochs: 6
+    hidden_dim: 256
+  long:
+    algo: DDPG
+    lr_actor: 1.0e-4
+    lr_critic: 1.0e-3
+    gamma: 0.95
+    tau: 0.005
+    hidden_dim: 256
+    noise_std: 0.08
+  total_long_frames: 200
+  bc_demo_episodes: 20
+  bc_train_epochs: 100
+
+experiment:
+  eval_episodes: 30
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/checkpoints
+  log_dir: results/logs
+  results_dir: results

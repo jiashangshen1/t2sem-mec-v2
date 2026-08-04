@@ -1,0 +1,7 @@
+reward:
+  mask_channel: nlos
+  mask_delay_margin: 0.75
+  mask_sim_margin: 0.08
+
+task:
+  arrival_rate: 0.30

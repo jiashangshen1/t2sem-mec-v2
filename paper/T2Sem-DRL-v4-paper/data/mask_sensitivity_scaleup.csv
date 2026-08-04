@@ -1,0 +1,13 @@
+dim,value,alpha,channel,sim_margin,overall_sla,energy,critical,interactive,best_effort
+delay_margin,0.6,0.6,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+delay_margin,0.7,0.7,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+delay_margin,0.8,0.8,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+delay_margin,0.9,0.9,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+delay_margin,1.0,1.0,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+channel,los,0.8,los,0.05,0.8087,42431.6,0.4687,0.9383,0.9992
+channel,expected,0.8,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+channel,nlos,0.8,nlos,0.05,0.4005,121317.2,0.0,0.2848,0.9493
+sim_margin,0.0,0.8,expected,0.0,0.8103,68409.4,0.5961,0.8187,0.9972
+sim_margin,0.05,0.8,expected,0.05,0.8022,41837.4,0.4543,0.934,0.9992
+sim_margin,0.1,0.8,expected,0.1,0.7836,34643.9,0.3551,0.9999,0.9766
+sim_margin,0.15,0.8,expected,0.15,0.7663,36382.2,0.3551,0.9635,0.9626

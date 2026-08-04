@@ -1,0 +1,18 @@
+# Ideal-track baseline overlay.
+# This overlay never replaces v4.3 artifacts directly. It only redirects outputs
+# to ideal_track folders and pins a deterministic seed set.
+
+seed: 42
+
+experiment:
+  eval_seeds: [42, 123, 456]
+  checkpoint_dir: results/ideal_track/checkpoints
+  log_dir: results/ideal_track/logs
+  results_dir: results/ideal_track
+
+ideal_track:
+  enabled: true
+  frozen_baseline_ref: configs/improved_v4_pertier.yaml
+  method_name: ideal_t2sem_x
+  protocol_tag: ideal_v1
+  notes: "Use with configs/default.yaml + ideal method overlays."

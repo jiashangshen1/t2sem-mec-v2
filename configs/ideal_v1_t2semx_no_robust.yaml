@@ -1,0 +1,8 @@
+# T2Sem-X ablation: disable uncertainty risk term in per-tier dual updates.
+
+reward:
+  ideal_dual_risk_scale: 0.0
+
+experiment:
+  checkpoint_dir: results/ideal_track/checkpoints_t2semx_no_robust
+  log_dir: results/ideal_track/logs_t2semx_no_robust

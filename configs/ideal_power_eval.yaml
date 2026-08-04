@@ -1,0 +1,7 @@
+experiment:
+  eval_seeds: [42, 123, 456, 789, 1011, 2027, 3031, 4049, 5051, 6067]
+  eval_episodes: 30
+
+ideal_track:
+  power_target_ci_width_pp: 3.0
+  min_seed_count: 8

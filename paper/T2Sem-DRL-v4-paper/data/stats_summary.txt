@@ -1,0 +1,22 @@
+# Statistical summary
+critical_priority: n=3 SLA=90.47% ± 3.49 pp
+greedy: n=5 SLA=87.76% ± 0.05 pp
+independent_ppo: n=3 SLA=91.41% ± 0.21 pp
+local_only: n=3 SLA=86.05% ± 0.3 pp
+mobility_full: n=3 SLA=16.39% ± 11.08 pp
+mobility_single_ts: n=3 SLA=1.67% ± 2.37 pp
+random: n=3 SLA=78.47% ± 0.05 pp
+scaleup_greedy: n=3 SLA=71.03% ± 0.12 pp
+scaleup_t2sem: n=3 SLA=80.31% ± 3.79 pp
+semantic_mappo: n=4 SLA=90.77% ± 1.17 pp
+t2sem_full: n=8 SLA=92.38% ± 3.08 pp
+t2sem_single_lambda: n=3 SLA=93.99% ± 1.42 pp
+t2sem_single_ts: n=3 SLA=88.85% ± 0.35 pp
+tjcct: n=5 SLA=86.62% ± 0.08 pp
+
+Paired t2sem_full vs greedy (seeds [42, 123, 456]):
+  mean diff = 6.21 pp, 95% bootstrap CI [4.50, 8.10]
+  paired t ≈ 5.96, normal-approx p ≈ 0.0000 (n=3; interpret cautiously)
+
+Paired t2sem_full vs semantic_mappo (seeds [42, 123, 456]):
+  mean diff = 2.56 pp, 95% bootstrap CI [1.14, 4.41]
