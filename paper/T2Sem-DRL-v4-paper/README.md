@@ -1,61 +1,59 @@
-# T2Sem-DRL v4 — Complete Paper Package
+# T2Sem-DRL v4 — Paper Package
 
-桌面论文完整材料包，格式对齐 `uav-semantic-mec/paper/draft_v2.md`，实验数据来自 `t2sem-mec-v2` 论文套件（2025-07-01 完成）。
+Complete paper package aligned with the `uav-semantic-mec` draft style. Experimental numbers come from the `t2sem-mec-v2` paper suite.
 
-## 主文档
+## Main documents
 
-| 文件 | 说明 |
-|------|------|
-| **`draft_full.md`** | **完整英文论文**（Abstract → VIII + 3 Appendices + 25 References + 公式编号） |
-| `draft.md` | 早期精简版（已被 `draft_full.md` 取代） |
-| `outline.md` | 科研 story / roadmap / 审稿风险 |
-| `references.bib` | BibTeX（25 条，可导入 Overleaf） |
+| File | Description |
+|------|-------------|
+| **`draft_full.md`** | Full English manuscript (Abstract → Section VIII + appendices + references) |
+| `draft.md` | Early short draft (superseded by `draft_full.md`) |
+| `outline.md` | Story / roadmap / review risks |
+| `references.bib` | BibTeX (25 entries) |
 
-## 图表（7 组，PDF + PNG）
+## Figures (PDF + PNG)
 
-| 图 | 文件 | 论文章节 |
-|----|------|----------|
-| Fig. 1 | `fig0_pipeline` | 系统架构 / pipeline teaser |
-| Fig. 2 | `fig2_main_sla` | Table I 可视化 |
-| Fig. 3 | `fig3_per_tier_sla` | **核心：分档 SLA** |
-| Fig. 4 | `fig4_pareto` | 能耗–SLA Pareto |
-| Fig. 5 | `fig5_mask_sensitivity` | 掩码敏感性 |
-| Fig. 6 | `fig6_ablation` | 消融柱状图 |
-| Fig. 7 | `fig7_delay_energy` | 时延–能耗 |
+| Figure | File stem | Role |
+|--------|-----------|------|
+| Fig. 1 | `fig0_pipeline` | System / pipeline teaser |
+| Fig. 2 | `fig2_main_sla` | Main SLA comparison |
+| Fig. 3 | `fig3_per_tier_sla` | Per-tier SLA (core result) |
+| Fig. 4 | `fig4_pareto` | Energy–SLA Pareto |
+| Fig. 5 | `fig5_mask_sensitivity` | Mask sensitivity |
+| Fig. 6 | `fig6_ablation` | Ablation bars |
+| Fig. 7 | `fig7_delay_energy` | Delay–energy |
 
 ```bash
-python scripts/plot_paper_figures.py   # 从 data/*.csv 重绘全部图
+python scripts/plot_paper_figures.py   # regenerate from data/*.csv
 ```
 
-## 实验数据 `data/`
+## Experiment data (`data/`)
 
-- `experiment_summary.csv` — 主对比
-- `per_tier_sla.csv` — 分档 SLA
+- `experiment_summary.csv` — main comparison
+- `per_tier_sla.csv` — per-tier SLA
 - `per_tier_sla_baseline_maskoff.csv` — Appendix A
-- `pareto_points.csv` — Pareto
-- `mask_sensitivity.csv` — 敏感性
-- `ablation_summary.csv` — 消融
+- `pareto_points.csv` — Pareto points
+- `mask_sensitivity.csv` — sensitivity
+- `ablation_summary.csv` — ablation
 
-## 复现实验
+## Reproduce experiments
 
 ```bash
-cd t2sem-mec-v2
+cd ../..   # t2sem-mec-v2 code root when used from the local workspace
 python experiments/run_all.py --config configs/improved_v4_pertier.yaml --variants A1_full --device cpu
 ```
 
-## 论文核心数字（可直接引用）
+In the published `t2sem-mec-v2` repository, run from the repo root with the same command.
 
-- 主对比 SLA：**88.3%**（greedy 80.5%）
-- 分档：critical **87.0%** / interactive **78.4%** / best-effort **100%**
-- 消融 −mask：**61.2%**（+29.2 pp 来自掩码）
-- Pareto 最优：**91.1% SLA @ 16,181 J**（P4 high pressure）
+## Headline numbers (for citation checks)
 
-## Overleaf 使用
+- Main SLA: **88.3%** (greedy 80.5%)
+- Per-tier: critical **87.0%** / interactive **78.4%** / best-effort **100%**
+- Ablation −mask: **61.2%** (+29.2 pp from the mask)
+- Pareto point: **91.1% SLA @ 16,181 J** (P4 high pressure)
 
-1. 新建 IEEEtran 项目
-2. 上传 `references.bib` + `figures/*.pdf`
-3. 将 `draft_full.md` 各节转为 LaTeX（或先用 Pandoc：`pandoc draft_full.md -o main.tex`）
+## Overleaf workflow
 
-## 写作规范
-
-遵循 `research-paper-writing` skill：一表一信息、claim–evidence 对齐、掩码定位为 system interface。
+1. Create an IEEEtran project.
+2. Upload `references.bib` and `figures/*.pdf`.
+3. Convert `draft_full.md` sections to LaTeX (or `pandoc draft_full.md -o main.tex`).
