@@ -11,6 +11,7 @@ from ..env.multi_mec_env import MultiMECEnv
 from ..utils.metrics import EpisodeMetrics
 from .ddpg import DDPGLongAgent
 from .ppo import PPOShortAgent
+from .td3 import TD3LongAgent
 
 
 class T2SemDRL:
@@ -48,7 +49,8 @@ class T2SemDRL:
         self.long_smooth_coef = float(long_cfg.get("smooth_coef", 0.0))
         self.long: Optional[DDPGLongAgent] = None
         if use_long_agent:
-            self.long = DDPGLongAgent(
+            long_algo = str(long_cfg.get("algo", "DDPG")).lower()
+            common = dict(
                 obs_dim=env.frame_state_dim,
                 act_dim=env.long_action_dim,
                 lr_actor=float(long_cfg["lr_actor"]),
@@ -60,6 +62,15 @@ class T2SemDRL:
                 device=device,
                 action_l2_coef=float(long_cfg.get("action_l2_coef", 0.0)),
             )
+            if long_algo == "td3":
+                self.long = TD3LongAgent(
+                    **common,
+                    policy_delay=int(long_cfg.get("policy_delay", 2)),
+                    target_noise=float(long_cfg.get("target_noise", 0.2)),
+                    noise_clip=float(long_cfg.get("noise_clip", 0.5)),
+                )
+            else:
+                self.long = DDPGLongAgent(**common)
 
     def _select_short(self, obs: np.ndarray, deterministic: bool = False) -> np.ndarray:
         local = self.env.get_local_obs_batch()
