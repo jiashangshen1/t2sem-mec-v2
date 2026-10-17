@@ -562,6 +562,16 @@ Test-time variation without retraining: SLA peaks at $\alpha=0.6$–$0.7$ (93–
 
 Two-timescale UAV trajectory learning recovers a small but non-trivial SLA fraction that the static single-timescale policy cannot, motivating its retention as an optional operating mode for coverage-limited deployments.
 
+**Long-timescale learner swap (DDPG → TD3).** To further probe learner-dependence, we swap the long-timescale DDPG for TD3 [23] (twin critics, delayed policy updates, target-policy smoothing) under the identical frozen protocol (BC warm-start, per-tier $\lambda$, per-tier mask margins, eval-selected checkpoints; 2 agents × 5 seeds {42,123,456,789,1011} × 300 episodes, 30 evaluation episodes per seed). Overall SLA is statistically indistinguishable (**90.79 ± 2.37%** vs. **90.21 ± 2.09%**) — a stronger off-the-shelf learner does not move the aggregate metric, consistent with the interface-dominance evidence above. TD3 instead shifts the *operating point*: critical **−7.4 pp** / interactive **+9.4 pp** (the critical drop concentrates in one seed, 0.617 vs. 0.78–0.81 for the others), with the lowest mean delay (**0.124 s**) and a **−28%** mean energy reduction (13.9 vs. 19.3 kJ); given the large cross-seed spread (per-seed energy 5.7–38.7 kJ across both agents) and the absence of a bootstrap CI, we report the energy gap as **indicative, not significant**. Practically, TD3 is a legitimate energy-aware deployment alternative for the optional long-timescale mode; scientifically, the flat aggregate SLA reinforces that the remaining headroom lives in the interface and contention handling, not in learner capacity.
+
+**TABLE VIII**
+**LONG-AGENT SWAP UNDER THE FROZEN PROTOCOL (2 AGENTS × 5 SEEDS × 300 EPISODES).**
+
+| Long agent | Overall SLA (%) | Delay (s) | Energy (J) | Critical (%) | Interactive (%) | Best-effort (%) |
+|-----------|:---------------:|:---------:|:----------:|:------------:|:---------------:|:---------------:|
+| DDPG | 90.21 ± 2.09 | 0.138 ± 0.028 | 19,326 ± 11,981 | 83.7 | 86.5 | 100.0 |
+| TD3 | **90.79 ± 2.37** | **0.124 ± 0.009** | **13,928 ± 7,532** | 76.4 | **95.9** | 99.97 |
+
 **TABLE VII**  
 **SUPPLEMENTARY CROSS-CHECKS (POST-REVISION).**
 
@@ -576,6 +586,7 @@ Two-timescale UAV trajectory learning recovers a small but non-trivial SLA fract
 | Critical-priority variant | Higher critical weight + stricter target | 90.47% overall | Reweighting improves critical protection but does not imply universal aggregate gain | mixed |
 | Alpha validation | val {42,123}, test {456} | $\alpha^*=0.6$, test 95.81% (= $\alpha=0.8$) | Validation tuning is not guaranteed to improve every hold-out seed | mixed |
 | Scale-up mask sensitivity | No retraining, seeds {42,123,456} | Baseline (0.8/expected/0.05): 80.2%; NLoS: 40.1% | Scale-up regime is highly channel-assumption sensitive | mixed |
+| Long-agent swap | DDPG→TD3, seeds {42,123,456,789,1011}, frozen protocol | 90.79% vs. 90.21% (±2.4/±2.1) | Learner upgrade leaves aggregate SLA unchanged; tier operating point shifts (crit −7.4, int +9.4 pp); energy −28% indicative | support (interface-dominance) |
 
 **Future work:** full external semantic baseline reproduction [3], [4], [11], [21] beyond our shared-interface implementation; full TJCCT reproduction [5]; larger-seed bootstrap tests; larger-scale (32+ UEs) trace-driven experiments; hardware-in-the-loop.
 
